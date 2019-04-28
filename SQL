@@ -1,0 +1,17 @@
+import  pypyodbc
+
+#DSQLServer= "DESKTOP-QUL5LLR\SQLEXPRESS"
+#DDatabase="GameList"
+connection= pypyodbc.connect('Driver={SQL Server};'
+                             'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                             'Database=GameList;')
+cursor=connection.cursor()
+mySQLQuerry=("""
+                SELECT NameGame, Janr, Date, Rejim,  Izdatel, Dvijok, Control, pegi 
+                FROM dbo.TGames
+                WHERE Date='2016-04-12'      
+             """)
+cursor.execute(mySQLQuerry)
+results=cursor.fetchall()
+print(results)
+connection.close()
