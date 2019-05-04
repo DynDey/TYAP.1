@@ -1,7 +1,7 @@
 import sys
 import  pypyodbc
 def menu():
-    print('Выберите действие\n0-Выход\n1-Вывести данные базы\n2-Поиск строчки по элементу\n3-Добавить строчку\n4-Удалить строчку \n5-Создать новую таблицу')
+    print('Выберите действие\n0-Выход\n1-Вывести данные базы\n2-Поиск строчки по элементу\n3-Добавить строчку\n4-Удалить строчку \n5-Создать новую таблицу\n6-Изменение значений в таблице')
     d=input()
     if d==0:
         sys.exit()
@@ -15,6 +15,8 @@ def menu():
         deletefun()
     if d=='5':
         newtablefun()
+    if d=='6':
+        changefun()
 def exit():
     m = input('Вы хотите продолжить? (y/n)')
     if m == 'y':
@@ -118,8 +120,28 @@ def newtablefun():
                             Control nvarchar(50) NOT NULL,
                             Age_limit nvarchar(50) NOT NULL, 
                 );''')
+    connection.commit()
+    connection.close()
+    print("Таблица успешно созданна!")
+    exit()
+def changefun():
+    print("Выберите таблицу")
+    servername = input()
+    print("Выберите номер строки")
+    idstr=input()
+    print("Выберите название столбца который хотите изменить")
+    param=input()
+    print("Впишите новое значение")
+    text=input()
+    connection = pypyodbc.connect('Driver={SQL Server};'
+                                  'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                                  'Database=GameList;')
+    cursor = connection.cursor()
+    cursor.execute("update "+servername+"  set "+param+"="+text+" where Number="+idstr)
 
     connection.commit()
     connection.close()
+    print('Строчка Изменина!')
     exit()
+
 menu()
