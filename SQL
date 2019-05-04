@@ -1,17 +1,114 @@
+import sys
 import  pypyodbc
+def menu():
+    print('Выберите действие\n0-Выход\n1-Вывести данные списка\n2-Поиск строчки по элементу\n3-Добавить строчку\n4-Удалить строчку \n5-Создать новую таблицу')
+    d=input()
+    if d==0:
+        sys.exit()
+    if d== '1':
+        listfun()
+    if d=='2':
+        searchfun()
+    if d=='3':
+        addfun()
+    if d==4:
+        deletefun()
+    if d=='5':
+        newtablefun()
+def exit():
+    m = input('Вы хотите продолжить? (y/n)')
+    if m == 'y':
+        menu()
+    else:
+        sys.exit()
+def listfun():#Вывод результатов по параметру
+    connection= pypyodbc.connect('Driver={SQL Server};'
+                                 'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                                 'Database=GameList;')
+    cursor=connection.cursor()
+    mySQLQuerry=("""
+                    SELECT Name_Game, Genre, Date, Mode, Issuer, Game_engine, Control, Age_limit
+                    FROM dbo.TGames 
+                """)
+    cursor.execute(mySQLQuerry)
 
-#DSQLServer= "DESKTOP-QUL5LLR\SQLEXPRESS"
-#DDatabase="GameList"
-connection= pypyodbc.connect('Driver={SQL Server};'
-                             'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
-                             'Database=GameList;')
-cursor=connection.cursor()
-mySQLQuerry=("""
-                SELECT NameGame, Janr, Date, Rejim,  Izdatel, Dvijok, Control, pegi 
-                FROM dbo.TGames
-                WHERE Date='2016-04-12'      
-             """)
-cursor.execute(mySQLQuerry)
-results=cursor.fetchall()
-print(results)
-connection.close()
+    results=cursor.fetchall()
+    for i in results:
+        print((i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7]))
+    connection.close()
+    exit()
+
+
+
+def searchfun():#Вывод результатов по параметру
+    connection= pypyodbc.connect('Driver={SQL Server};'
+                                 'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                                 'Database=GameList;')
+    cursor=connection.cursor()
+    mySQLQuerry=("""
+                    SELECT Name_Game, Genre, Date, Mode, Issuer, Game_engine, Control, Age_limit
+                    FROM dbo.TGames
+                    WHERE Issuer='Blizzard Entertainment'
+                """)
+    cursor.execute(mySQLQuerry)
+
+    results=cursor.fetchall()
+    for i in results:
+        print((i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7]))
+    connection.close()
+    exit()
+def addfun():
+    val_1=[]
+    #for i in range(8):
+    #    updtabl=input()
+    #    val_1.append(updtabl)
+    #val_1=' '.join(val_1)
+    ##val_1=val_1.replace(' ',',')
+    connection = pypyodbc.connect('Driver={SQL Server};'
+                                  'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                                  'Database=GameList;')
+    cursor = connection.cursor()
+    cursor.execute("""
+                        insert into dbo.TGames(Name_Game, Genre, Date, Mode, Issuer, Game_engine, Control, Age_limit)
+                        values('Test','test','2000-01-01','test','test','test','test','test')
+                    """)
+
+    connection.commit()
+    connection.close()
+    print('Строчка добавленна!')
+    exit()
+def deletefun():
+    connection = pypyodbc.connect('Driver={SQL Server};'
+                                  'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                                  'Database=GameList;')
+    cursor = connection.cursor()
+    cursor.execute("""
+                            delete from dbo.TGames 
+                            where Number = 21
+                   """)
+
+    connection.commit()
+    connection.close()
+    print('Строчка удалена!')
+    exit()
+def newtablefun():
+    connection = pypyodbc.connect('Driver={SQL Server};'
+                                  'Server=DESKTOP-QUL5LLR\SQLEXPRESS;'
+                                  'Database=GameList;')
+    cursor = connection.cursor()
+    cursor.execute('''create table text
+                            (id INT NOT NULL,
+                            Name_Game nvarchar(50) NOT NULL,
+                            Genre nvarchar(50) NOT NULL,
+                            Date nvarchar(50) NOT NULL,
+                            Mode nvarchar(50) NOT NULL,
+                            Issuer nvarchar(50) NOT NULL,
+                            Game_engine nvarchar(50) NOT NULL,
+                            Control nvarchar(50) NOT NULL,
+                            Age_limit nvarchar(50) NOT NULL, 
+                );''')
+
+    connection.commit()
+    connection.close()
+    exit()
+menu()
