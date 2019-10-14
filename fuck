@@ -1,0 +1,72 @@
+#include"stdafx.h"
+
+#include<iostream>
+
+#include<math.h>
+
+using namespace std;
+
+double f(double x) {
+
+	double f;
+
+	f = sin(x) - sqrt(3)*cos(x) + 4*x - 4;
+
+	return f;
+
+}
+
+double f1(double x) {
+
+	double f1;
+
+	f1 = cos(x) + sqrt(3)*sin(x) + 4;
+
+	return f1;
+
+}
+
+double f2(double x) {
+
+	double f2;
+
+	f2 = sqrt(3)*cos(x) - sin(x);
+
+	return f2;
+
+}
+
+void main() {
+
+	double a, b, E, x, i;
+
+	a = 0.1; b = 1.7; E = 0.001;
+
+	cout << "a=" << a << endl;
+
+	cout << "b=" << b << endl;
+
+	cout << "E=" << E << endl;
+
+
+
+	if (f(a)*f2(a) > 0) {
+
+		cout << "Uslovie vipolnenno!" << endl;
+
+		x = a;
+
+	}
+
+	else {
+
+		if (f(b)*f2(b) > 0) {
+
+			cout << "Uslovie vipolnenno!" << endl;
+
+			x = b;
+
+		}
+
+
+	}
